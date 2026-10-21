@@ -271,6 +271,7 @@ class AudioConverterApp(QMainWindow):
         bitrate = self.combo_bitrate.currentText().split(' - ')[0]
 
         # Wyłącz przyciski
+        self.btn_open_folder.setEnabled(False)
         self.btn_convert.setEnabled(False)
         self.btn_select.setEnabled(False)
         self.progress_bar.setVisible(True)
@@ -295,6 +296,7 @@ class AudioConverterApp(QMainWindow):
         self.last_output_file = output_file
 
     def conversion_error(self, error_message):
+        self.btn_open_folder.setEnabled(False)
         self.label_status.setText(f'❌ {error_message}')
         self.progress_bar.setVisible(False)
         self.btn_convert.setEnabled(True)
