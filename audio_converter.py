@@ -32,7 +32,7 @@ class ConversionThread(QThread):
             self.progress.emit("Przygotowuję konwersję...")
 
             # Przygotuj nazwę pliku wyjściowego
-            base_name = os.path.basename(self.input_file).rsplit('.', 1)[0]
+            base_name = os.path.splitext(os.path.basename(self.input_file))[0]
             output_file = os.path.join(self.output_dir, f"{base_name}.{self.output_format}")
 
             # Sprawdź czy plik już istnieje
