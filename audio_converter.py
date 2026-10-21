@@ -1,6 +1,7 @@
 import os
 import sys
 import subprocess
+import shutil
 from PyQt5.QtWidgets import (QApplication, QMainWindow, QPushButton, QLabel,
                              QFileDialog, QComboBox, QVBoxLayout, QWidget,
                              QProgressBar, QGroupBox, QHBoxLayout)
@@ -8,7 +9,8 @@ from PyQt5.QtCore import QThread, pyqtSignal
 from PyQt5.QtGui import QFont, QIcon
 
 # Dodaj ffmpeg do PATH
-ffmpeg_path = os.path.join(os.getcwd(), "ffmpeg", "bin")
+PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
+ffmpeg_path = os.path.join(PROJECT_DIR, "ffmpeg", "bin")
 os.environ["PATH"] += os.pathsep + ffmpeg_path
 
 
@@ -43,7 +45,11 @@ class ConversionThread(QThread):
             self.progress.emit(f"Konwertuję do {self.output_format.upper()}...")
 
             # Ścieżka do FFmpeg
-            ffmpeg_exe = os.path.join(os.getcwd(), "ffmpeg", "bin", "ffmpeg.exe")
+            ffmpeg_exe = os.path.join(ffmpeg_path, "ffmpeg.exe" if sys.platform == "win32" else "ffmpeg")
+            if not os.path.isfile(ffmpeg_exe):
+                ffmpeg_exe = shutil.which("ffmpeg")
+            if not ffmpeg_exe:
+                raise FileNotFoundError("Nie znaleziono FFmpeg. Zainstaluj FFmpeg lub umieść go w ffmpeg/bin.")
 
             # Komenda FFmpeg
             command = [ffmpeg_exe, '-i', self.input_file]
