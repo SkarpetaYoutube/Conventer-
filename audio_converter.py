@@ -306,9 +306,9 @@ class AudioConverterApp(QMainWindow):
             if sys.platform == 'win32':
                 os.startfile(os.path.dirname(self.last_output_file))
             elif sys.platform == 'darwin':  # macOS
-                os.system(f'open "{os.path.dirname(self.last_output_file)}"')
+                subprocess.Popen(["open", os.path.dirname(self.last_output_file)])
             else:  # Linux
-                os.system(f'xdg-open "{os.path.dirname(self.last_output_file)}"')
+                subprocess.Popen(["xdg-open", os.path.dirname(self.last_output_file)])
 
 
 if __name__ == '__main__':
